@@ -17,7 +17,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import Panel from './Panel.vue';
+import Panel from './panel.vue';
 
 export default Vue.extend({
   components: {

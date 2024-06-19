@@ -43,7 +43,7 @@ export abstract class Diagram {
             context.drawImage(img, 0, 0);
             resolve(canvases[i]);
           };
-          img.src = urls[i];
+          img.src = `https://dcw.kijiharu3112.workers.dev?path=${urls[i]}`;
         } catch (err) {
           reject(err);
         }
