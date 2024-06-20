@@ -1,0 +1,28 @@
+{
+    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+    "dependencyDashboard": true,
+    "ignoreTests": false,
+    "rebaseWhen": "conflicted",
+    "semanticCommits": "enabled",
+    "semanticCommitScope": "deps",
+    "semanticCommitType": "chore",
+    "minimumReleaseAge": "3 days",
+    "timezone": "Asia/Tokyo",
+    "schedule": ["before 3am"],
+    "rollback": {
+        "branchTopic": "{{{depNameSanitized}}}-rollback",
+        "commitMessageAction": "Roll back",
+        "semanticCommitType": "fix",
+        "schedule": [
+            "at any time"
+        ]
+    },
+    "packageRules": [
+        {
+            "groupName": "Auto merge & approve disable rules",
+            "matchUpdateTypes": ["major"],
+            "autoApprove": false,
+            "automerge": false
+        }
+    ]
+}
