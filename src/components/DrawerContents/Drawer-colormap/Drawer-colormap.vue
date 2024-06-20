@@ -24,12 +24,14 @@ export default Vue.extend({
   components: {
     colorbar,
   },
+  // 初期データを設定します。ここでは、選択されたカラーマップとカラーマップの名前のリストを設定します。
   data(): DrawerColormapDataType {
     return {
       selected: Infinity,
       clrmap_names: new Array(78).fill(''),
     };
   },
+  // カラーマップの名前のリストを生成します。
   created: function () {
     for (let i = 0; i < this.clrmap_names.length; i++) {
       const clrindex = i + 1;

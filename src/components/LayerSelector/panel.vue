@@ -124,29 +124,36 @@ export default Vue.extend({
   components: { ColorBar, DcwmtColormap },
   data() {
     return {
+      // ダイアログの表示/非表示を管理するデータプロパティ
       dialog: false,
     };
   },
   methods: {
+    // レイヤーの順序を上げることができるかどうかを判定するメソッド
     canRaise: function (index: number) {
       return index > 0;
     },
+    // レイヤーの順序を下げることができるかどうかを判定するメソッド
     canLower: function (index: number) {
       return index >= 0 && index < this.layers.length - 1;
     },
+    // レイヤーの順序を上げるメソッド
     raise: function (index: number) {
       const tmpLayer = this.layers[index];
       this.$set(this.layers, index, this.layers[index - 1]);
       this.$set(this.layers, index - 1, tmpLayer);
     },
+    // レイヤーの順序を下げるメソッド
     lower: function (index: number) {
       const tmpLayer = this.layers[index];
       this.$set(this.layers, index, this.layers[index + 1]);
       this.$set(this.layers, index + 1, tmpLayer);
     },
+    // ダイアログを閉じるメソッド
     close: function () {
       this.dialog = false;
     },
+    // カラーマップの変更を保存するメソッド
     save: function (layerIndex: number) {
       const layer = this.layers[layerIndex];
       //@ts-ignore
@@ -159,6 +166,7 @@ export default Vue.extend({
     },
   },
   computed: {
+    // Vuexストアからレイヤーの情報を取得し、設定します。
     layers: {
       get: function (): LayerTypes[] {
         return this.$store.getters.drawingOptions.layers;
@@ -172,6 +180,7 @@ export default Vue.extend({
         });
       },
     },
+    // カラーバーのサイズを定義します。
     colorBarSize: function () {
       return {
         width: '80%',

@@ -5,23 +5,39 @@ export type Clrmap = {
   g: number;
   b: number;
 };
-
+/**
+ * ColorMapクラスは、色マップを管理します。
+ */
 export class ColorMap {
   private clrindex: number;
-
+  /**
+   * ColorMapクラスのコンストラクタ。
+   * @param clrindex - 色マップのインデックス
+   */
   constructor(clrindex: number) {
     this.clrindex = clrindex;
   }
-
+  /**
+   * 色マップを取得します。
+   * @returns 色マップの配列
+   */
   getClrmap = (): Array<Clrmap> => {
     return clrmap[this.clrindex];
   };
-
+  /**
+   * 色マップの名前を取得します。
+   * @returns 色マップの名前
+   */
   getClrmapName = (): string => {
     const clrindex = this.clrindex + 1;
     return clrindex < 10 ? `clrmap_0${clrindex}` : `clrmap_${clrindex}`;
   };
-
+  /**
+   * 色マップを描画します。
+   * @param width - 幅
+   * @param height - 高さ
+   * @returns 描画されたキャンバス
+   */
   draw = (width: number, height: number) => {
     const canvas = document.createElement('canvas');
     [canvas.width, canvas.height] = [width, height];
@@ -39,7 +55,14 @@ export class ColorMap {
 
     return canvas;
   };
-
+  /**
+   * 三角形を描画します。
+   * @param canvas - キャンバス
+   * @param color - 色
+   * @param width - 幅
+   * @param height - 高さ
+   * @param isLeft - 左側に描画するかどうか
+   */
   private drawTriangle = (
     canvas: HTMLCanvasElement,
     color: Clrmap,
@@ -68,7 +91,15 @@ export class ColorMap {
 
     context.fill();
   };
-
+  /**
+   * 矩形を描画します。
+   * @param canvas - キャンバス
+   * @param color - 色
+   * @param x - X座標
+   * @param y - Y座標
+   * @param width - 幅
+   * @param height - 高さ
+   */
   private drawRect = (
     canvas: HTMLCanvasElement,
     color: Clrmap,

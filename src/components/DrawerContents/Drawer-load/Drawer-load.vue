@@ -14,11 +14,12 @@
 import Vue from 'vue';
 import { DefinedOptions, DrawingOptions } from '../../../dcmwtconfType';
 import { v4 as uuid } from 'uuid';
-
+// ConfDataは、定義オプションと描画オプションを保持します。
 type ConfData = {
   definedOptions: DefinedOptions;
   drawingOptions: DrawingOptions;
 };
+// DataTypeは、ロードされたデータを保持します。
 type DataType = {
   loadedData: ConfData | undefined;
 };
@@ -30,6 +31,7 @@ export default Vue.extend({
     };
   },
   computed: {
+    // ドロップされた情報を文字列として取得します。
     droppedInfo: function () {
       if (!this.loadedData) {
         return '';
@@ -47,6 +49,7 @@ export default Vue.extend({
         return str;
       }
     },
+    // VuexストアからdrawingOptionsを取得し、設定します。
     drawingOptions: {
       get: function () {
         return this.$store.getters.drawingOptions;
@@ -55,6 +58,7 @@ export default Vue.extend({
         this.$store.commit('setDrawingOptions', value);
       },
     },
+    // VuexストアからdefinedOptionsを取得し、設定します。
     definedOptions: {
       get: function () {
         return this.$store.getters.definedOptions;
@@ -65,6 +69,7 @@ export default Vue.extend({
     },
   },
   methods: {
+    // ロードボタンがクリックされたときの処理を定義します。
     loading: function () {
       if (!this.loadedData) {
         throw new Error('Dropped an unexpected JSON Data');
@@ -79,6 +84,7 @@ export default Vue.extend({
     },
   },
   mounted: function () {
+    // ドロップゾーンに対するイベントリスナーを設定します。
     const dropzone = this.$el;
 
     // JSONファイルがドラッグされた際に, 無駄な処理を防ぐ

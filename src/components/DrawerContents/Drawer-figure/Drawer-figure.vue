@@ -29,9 +29,11 @@ export default Vue.extend({
     };
   },
   computed: {
+    // 利用可能な描画方法のリストを取得します。
     projections: function () {
       return projections;
     },
+    // VuexストアからdrawingOptionsを取得し、設定します。
     drawingOptions: {
       get: function (): DrawingOptions {
         return this.$store.getters.drawingOptions;
@@ -42,9 +44,11 @@ export default Vue.extend({
     },
   },
   methods: {
+    // 描画方法がクリックされたときの処理を定義します。
     onClick: function (projection: Projection) {
       const codeObj = { projCode: projection.code as ProjCodes };
       const storeObj = this.drawingOptions;
+      // 選択された描画方法をdrawingOptionsに設定します。
       this.drawingOptions = { ...storeObj, ...codeObj };
     },
   },

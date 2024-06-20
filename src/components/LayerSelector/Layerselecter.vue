@@ -24,6 +24,7 @@ export default Vue.extend({
     Panel,
   },
   data: () => ({
+    // fabボタンがクリックされたかどうかを管理するデータプロパティ
     fab: false,
   }),
 });

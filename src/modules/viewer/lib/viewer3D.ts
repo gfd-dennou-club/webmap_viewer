@@ -9,8 +9,15 @@ import { LayerController } from '../../layer/LayerController';
 import { ViewerInterface } from './ViewerInterface';
 
 export type ReturnedTypeIn3D = Viewer;
-
+/**
+ * Viewer3Dクラスは、3Dビューワーを管理します。
+ */
 export class Viewer3D extends Viewer implements ViewerInterface {
+  /**
+   * Viewer3Dクラスのコンストラクタ。
+   * @param mapEl - マップ要素
+   * @param center - 中心座標
+   */
   constructor(mapEl: HTMLDivElement, center: [number, number]) {
     super(mapEl, {
       imageryProvider: new TileCoordinatesImageryProvider(),
@@ -32,7 +39,10 @@ export class Viewer3D extends Viewer implements ViewerInterface {
     this.scene.globe.showGroundAtmosphere = false;
     this.center = center;
   }
-
+  /**
+   * レイヤーコントローラを登録します。
+   * @param layerController - レイヤーコントローラ
+   */
   public register = (layerController: LayerController) => {
     const imageryLayers = this.imageryLayers;
     const defaultLayer = imageryLayers.get(0);
@@ -46,7 +56,10 @@ export class Viewer3D extends Viewer implements ViewerInterface {
       imageryLayers.add(imageryLayer);
     }
   };
-
+  /**
+   * レイヤーを更新します。
+   * @param layers - レイヤーの配列
+   */
   public updateLayers = (layers: LayerTypes[]) => {
     const baseLayers = this.imageryLayers;
     if (baseLayers.length !== layers.length) {
@@ -96,9 +109,9 @@ export class Viewer3D extends Viewer implements ViewerInterface {
         } else if (layer.type === 'vector') {
           if (
             (purposeLayer.imageryProvider as Layer3D).vectorInterval.x !==
-              layer.vecinterval.x ||
+            layer.vecinterval.x ||
             (purposeLayer.imageryProvider as Layer3D).vectorInterval.y !==
-              layer.vecinterval.y
+            layer.vecinterval.y
           ) {
             baseLayers.remove(purposeLayer, false);
             (purposeLayer.imageryProvider as Layer3D).vectorInterval =
@@ -121,7 +134,10 @@ export class Viewer3D extends Viewer implements ViewerInterface {
     }
     this.render();
   };
-
+  /**
+   * 固定値を変更します。
+   * @param fixed - 固定値
+   */
   public changeFixed = (fixed: string) => {
     const baseLayers = this.imageryLayers;
     const lenOfLayers = baseLayers.length;
@@ -131,14 +147,24 @@ export class Viewer3D extends Viewer implements ViewerInterface {
     baseLayers.add(lastLayer, lenOfLayers - 1);
     this.render();
   };
-
+  /**
+   * ズームレベルを取得します。
+   * @returns ズームレベル
+   */
   get zoom(): number {
     return 0;
   }
+  /**
+   * ズームレベルを設定します。
+   * @param value - ズームレベル
+   */
   set zoom(value: number) {
     value;
   }
-
+  /**
+   * 中心座標を取得します。
+   * @returns 中心座標
+   */
   get center(): [number, number] {
     const windowCenter = new Cartesian2(
       this.container.clientWidth / 2,
@@ -154,6 +180,10 @@ export class Viewer3D extends Viewer implements ViewerInterface {
     ];
     return coord;
   }
+  /**
+   * 中心座標を設定します。
+   * @param value - 中心座標
+   */
   set center(value: [number, number]) {
     this.camera.setView({
       destination: Cartesian3.fromDegrees(

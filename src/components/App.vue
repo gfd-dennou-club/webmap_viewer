@@ -37,15 +37,18 @@ export default Vue.extend({
   },
   data(): AppDataType {
     return {
-      canDraw: false,
-      nowlink: '',
+      canDraw: false, // 初期状態では描画不可
+      nowlink: '',    // 初期状態ではリンクは空
     };
   },
   methods: {
+    // メニュー選択時の処理を定義
     selectMenu: function (link: string) {
+      // 現在のリンクが空、または選択したリンクが現在のリンクと同じ場合、描画可能フラグを反転
       if (!this.nowlink || this.nowlink === link) {
         this.canDraw = !this.canDraw;
       }
+      // 現在のリンクを更新
       this.nowlink = link;
     },
   },

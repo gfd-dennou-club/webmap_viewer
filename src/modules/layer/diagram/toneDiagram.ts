@@ -1,11 +1,19 @@
 import { Diagram } from './diagram';
 import { Clrmap, ColorMap } from '../../utility/colormap/colormap';
-
+/**
+ * ToneDiagramクラスは、数値データに基づいて色調図を描画します。
+ */
 export class ToneDiagram extends Diagram {
   public colorIndex: number;
   private colormap: Clrmap[];
   private readonly mathMethod: (x: number) => number;
 
+  /**
+   * ToneDiagramクラスのコンストラクタ。
+   * @param colorIndex - 色調図の色インデックス
+   * @param mathMethod - 数値データを処理するための関数
+   * @param minmax - 数値データの最小値と最大値
+   */
   constructor(
     colorIndex: number,
     mathMethod: (x: number) => number,
@@ -18,11 +26,21 @@ export class ToneDiagram extends Diagram {
     this.mathMethod = mathMethod;
   }
 
+  /**
+   * 色調図の色マップを変更します。
+   * @param colorIndex - 新しい色インデックス
+   */
   public changeColorMap(colorIndex: number) {
     this.colorIndex = colorIndex;
     this.colormap = new ColorMap(colorIndex).getClrmap();
   }
 
+  /**
+   * 数値データに基づいて色調図を描画します。
+   * @param datas - 色調図を描画するための数値データの配列
+   * @param canvas - 色調図を描画するキャンバス
+   * @returns 色調図が描画されたキャンバス
+   */
   protected drawVisualizedDiagramBasedONNumData = (
     datas: number[][],
     canvas: HTMLCanvasElement
@@ -45,6 +63,11 @@ export class ToneDiagram extends Diagram {
     return canvas;
   };
 
+  /**
+   * 数値データに対応する色マップを取得します。
+   * @param data - 色マップを取得するための数値データ
+   * @returns 対応する色マップ
+   */
   private getClrMap = (data: number): Clrmap => {
     const colormap_per_scalardata =
       this.colormap.length / (this.minmax[1] - this.minmax[0]);
@@ -64,6 +87,13 @@ export class ToneDiagram extends Diagram {
     }
   };
 
+  /**
+   * 与えられたパラメータに基づいて色調図を選択します。
+   * @param tone - 図を選択するためのパラメータ
+   * @param contour - 図を選択するためのパラメータ
+   * @param vector - 図を選択するためのパラメータ
+   * @returns 選択された図
+   */
   //@ts-ignore
   public whichDiagram<T, U, V>(tone: T, contour: U, vector: V): T | U | V {
     return tone;

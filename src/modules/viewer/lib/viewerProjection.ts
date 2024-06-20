@@ -15,8 +15,18 @@ import { LayerController } from '@/modules/layer/LayerController';
 import { LayerProjection } from '@/modules/layer/lib/layerProjection';
 import { LayerTypes } from '@/dcmwtconfType';
 import { Coordinate } from 'ol/coordinate';
-
+/**
+ * ViewerProjectionクラスは、地図投影を管理します。
+ */
 export class ViewerProjection extends Map implements ViewerInterface {
+  /**
+   * ViewerProjectionクラスのコンストラクタ。
+   * @param mapEl - マップ要素
+   * @param projCode - 投影コード
+   * @param zoomNativeLevel - ズームレベルの最小値と最大値
+   * @param zoom - ズームレベル
+   * @param center - 中心座標
+   */
   constructor(
     mapEl: HTMLDivElement,
     private readonly projCode: ProjCodes,
@@ -43,7 +53,11 @@ export class ViewerProjection extends Map implements ViewerInterface {
 
     this.setView(view);
   }
-
+  /**
+   * 投影を作成します。
+   * @param projCode - 投影コード
+   * @returns 投影
+   */
   private createProjection = (projCode: olProj.ProjectionLike) => {
     const getProjection = olProj.get;
 
@@ -74,7 +88,15 @@ export class ViewerProjection extends Map implements ViewerInterface {
 
     return projection;
   };
-
+  /**
+   * ビューを作成します。
+   * @param projection - 投影
+   * @param tileGrid - タイルグリッド
+   * @param zoom - ズームレベル
+   * @param center - 中心座標
+   * @param zoomNativeLevel - ズームレベルの最小値と最大値
+   * @returns ビュー
+   */
   private createView = (
     projection: olProj.Projection,
     tileGrid: TileGrid,
@@ -92,18 +114,27 @@ export class ViewerProjection extends Map implements ViewerInterface {
       multiWorld: true,
     });
   };
-
+  /**
+   * レイヤーコントローラを登録します。
+   * @param layerController - レイヤーコントローラ
+   */
   public register = (layerController: LayerController) => {
     const layerAry = layerController.get() as LayerProjection[];
     for (const layer of layerAry) {
       this.addLayer(layer);
     }
   };
-
+  /**
+   * レンダリング完了時のイベントリスナーを設定します。
+   * @param eventListener - イベントリスナー
+   */
   public set renderingCompleted(eventListener: () => void) {
     this.on('rendercomplete', eventListener);
   }
-
+  /**
+   * レイヤーを更新します。
+   * @param layers - レイヤーの配列
+   */
   public updateLayers = (layers: LayerTypes[]) => {
     //@ts-ignore
     const baseLayers: LayerProjection[] = this.getLayers().getArray();
@@ -153,7 +184,10 @@ export class ViewerProjection extends Map implements ViewerInterface {
       }
     }
   };
-
+  /**
+   * 固定値を変更します。
+   * @param fixed - 固定値
+   */
   public changeFixed = (fixed: string) => {
     const baseLayer = this.getLayers().getArray() as LayerProjection[];
     const lenOfLayers = baseLayer.length;
@@ -162,7 +196,10 @@ export class ViewerProjection extends Map implements ViewerInterface {
     lastLayer.fixed = fixed;
     lastLayer.getSource()?.refresh();
   };
-
+  /**
+   * レイヤーの順序を下げます。
+   * @param layer - レイヤー
+   */
   private lower(layer: LayerProjection) {
     const layers = this.getLayers();
     const layersAry = layers.getArray();
@@ -175,7 +212,10 @@ export class ViewerProjection extends Map implements ViewerInterface {
     }
     this.setLayers(layers);
   }
-
+  /**
+   * レイヤーの順序を上げます。
+   * @param layer - レイヤー
+   */
   private raise(layer: LayerProjection) {
     const layers = this.getLayers();
     const layersAry = layers.getArray();
@@ -192,7 +232,10 @@ export class ViewerProjection extends Map implements ViewerInterface {
     }
     this.setLayers(layers);
   }
-
+  /**
+   * ズームレベルを取得します。
+   * @returns ズームレベル
+   */
   get zoom(): number {
     const zoom = this.getView().getZoom();
     if (zoom === undefined) {
@@ -200,10 +243,17 @@ export class ViewerProjection extends Map implements ViewerInterface {
     }
     return zoom;
   }
+  /**
+   * ズームレベルを設定します。
+   * @param value - ズームレベル
+   */
   set zoom(value: number) {
     this.getView().setZoom(value);
   }
-
+  /**
+   * 中心座標を取得します。
+   * @returns 中心座標
+   */
   get center(): [number, number] {
     const center = this.getView().getCenter();
     if (!center) {
@@ -211,6 +261,10 @@ export class ViewerProjection extends Map implements ViewerInterface {
     }
     return center as [number, number];
   }
+  /**
+   * 中心座標を設定します。
+   * @param value - 中心座標
+   */
   set center(value: [number, number]) {
     this.getView().setCenter(value as Coordinate);
   }

@@ -11,8 +11,17 @@ import { Coordinate } from 'ol/coordinate';
 import { Projection } from 'ol/proj';
 import { ViewOptions } from 'ol/View';
 import { getCenter } from 'ol/extent';
-
+/**
+ * viewerCartesianクラスは、Cartesianビューワーを管理します。
+ */
 export class viewerCartesian extends Map /*implements ViewerInterface*/ {
+  /**
+   * viewerCartesianクラスのコンストラクタ。
+   * @param mapEl - マップ要素
+   * @param zoomNativeLevel - ズームレベルの最小値と最大値
+   * @param zoom - ズームレベル
+   * @param center - 中心座標
+   */
   constructor(
     mapEl: HTMLDivElement,
     zoomNativeLevel: { min: number; max: number },
@@ -50,18 +59,27 @@ export class viewerCartesian extends Map /*implements ViewerInterface*/ {
 
     this.setView(view);
   }
-
+  /**
+   * レイヤーコントローラを登録します。
+   * @param layerController - レイヤーコントローラ
+   */
   public register = (layerController: LayerController) => {
     const layerAry = layerController.get() as LayerCartesian[];
     for (const layer of layerAry) {
       this.addLayer(layer);
     }
   };
-
+  /**
+   * レンダリング完了時のイベントリスナーを設定します。
+   * @param eventListener - イベントリスナー
+   */
   public set renderingCompleted(eventListener: () => void) {
     this.on('rendercomplete', eventListener);
   }
-
+  /**
+   * レイヤーを更新します。
+   * @param layers - レイヤーの配列
+   */
   public updateLayers = (layers: LayerTypes[]) => {
     //@ts-ignore
     const baseLayers: LayerProjection[] = this.getLayers().getArray();
@@ -111,6 +129,10 @@ export class viewerCartesian extends Map /*implements ViewerInterface*/ {
     }
   };
 
+  /**
+   * レイヤーの順序を下げます。
+   * @param layer - レイヤー
+   */
   private lower(layer: LayerCartesian) {
     const layers = this.getLayers();
     const layersAry = layers.getArray();
@@ -123,7 +145,10 @@ export class viewerCartesian extends Map /*implements ViewerInterface*/ {
     }
     this.setLayers(layers);
   }
-
+  /**
+   * レイヤーの順序を上げます。
+   * @param layer - レイヤー
+   */
   private raise(layer: LayerCartesian) {
     const layers = this.getLayers();
     const layersAry = layers.getArray();
@@ -140,7 +165,10 @@ export class viewerCartesian extends Map /*implements ViewerInterface*/ {
     }
     this.setLayers(layers);
   }
-
+  /**
+   * ズームレベルを取得します。
+   * @returns ズームレベル
+   */
   get zoom(): number {
     const zoom = this.getView().getZoom();
     if (zoom === undefined) {
@@ -148,10 +176,17 @@ export class viewerCartesian extends Map /*implements ViewerInterface*/ {
     }
     return zoom;
   }
+  /**
+   * ズームレベルを取得します。
+   * @returns ズームレベル
+   */
   set zoom(value: number) {
     this.getView().setZoom(value);
   }
-
+  /**
+   * 中心座標を取得します。
+   * @returns 中心座標
+   */
   get center(): [number, number] {
     const center = this.getView().getCenter();
     if (!center) {
@@ -159,6 +194,10 @@ export class viewerCartesian extends Map /*implements ViewerInterface*/ {
     }
     return center as [number, number];
   }
+  /**
+   * 中心座標を設定します。
+   * @param value - 中心座標
+   */
   set center(value: [number, number]) {
     this.getView().setCenter(value as Coordinate);
   }

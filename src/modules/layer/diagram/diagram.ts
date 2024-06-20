@@ -13,12 +13,10 @@ export abstract class Diagram {
   }
 
   /**
-   * Fetch Numerical Data Tile from specificated urls.
-   *
-   * @param urls - An Array of url to localtion stored Numerical Data Tile.
-   * @param canvas - A canvases to drawing Numerical Data Tile.
-   *
-   * @returns A canvases to drawing Numerical Data Tile(same tile of param canvas).
+   * 画像を取得し、それぞれの画像をキャンバスに描画します。
+   * @param urls - 取得する画像のURLの配列
+   * @param size - 描画するキャンバスのサイズ
+   * @returns 描画されたキャンバスの配列
    */
   private async fetchImages(
     urls: string[],
@@ -43,7 +41,8 @@ export abstract class Diagram {
             context.drawImage(img, 0, 0);
             resolve(canvases[i]);
           };
-          img.src = `https://dcw.kijiharu3112.workers.dev?path=${urls[i]}`;
+          // CROS対策に、別の所を噛ませている
+          img.src = `https://dcw.kijiharu3112.workers.dev/?path=${urls[i]}`;
         } catch (err) {
           reject(err);
         }
@@ -56,11 +55,9 @@ export abstract class Diagram {
   }
 
   /**
-   * Get an array of Numerical Data from canvases drawn Numerical Data Tile.
-   *
-   * @param canvas - A canvas to drawing final data.
-   *
-   * @returns an array of Numerical Data.
+   * キャンバスから数値データを取得します。
+   * @param canvas - 数値データを取得するキャンバス
+   * @returns 数値データの配列
    */
   private getNumData(canvas: HTMLCanvasElement): number[] {
     const context = canvas.getContext('2d')!;
@@ -96,19 +93,22 @@ export abstract class Diagram {
   }
 
   /**
-   *
-   * Draw specific diagram to the canvas passed the second parameter based on datas that the first parameter,
-   *
-   * @param datas - an array of Numerical Data to drawing specific diagram. specifical diagram is drawn based on this data.
-   * @param canvas - a HTML Canvas Element to drawing specifical diagram.
-   *
-   * @returns A HTML Canvas Element drawn specifical diagram
-   * */
+   * 数値データに基づいて特定の図を描画します。
+   * @param datas - 図を描画するための数値データの配列
+   * @param canvas - 図を描画するキャンバス
+   * @returns 図が描画されたキャンバス
+   */
   protected abstract drawVisualizedDiagramBasedONNumData(
     datas: number[][],
     canvas: HTMLCanvasElement
   ): HTMLCanvasElement;
 
+  /**
+   * 画像を取得し、それぞれの画像から数値データを取得し、その数値データに基づいて図を描画します。
+   * @param urls - 取得する画像のURLの配列
+   * @param canvas - 図を描画するキャンバス
+   * @returns 図が描画されたキャンバス
+   */
   public async draw(
     urls: string[],
     canvas: HTMLCanvasElement
@@ -126,6 +126,12 @@ export abstract class Diagram {
     return visualizedDiagram;
   }
 
+  /**
+   * 画像を取得し、それぞれの画像から数値データを取得し、その数値データの最小値と最大値を計算します。
+   * @param urls - 取得する画像のURLの配列
+   * @param canvas - 数値データを取得するキャンバス
+   * @returns 数値データの最小値と最大値
+   */
   public calcMinMax = async (
     urls: string[],
     canvas: HTMLCanvasElement
@@ -140,6 +146,13 @@ export abstract class Diagram {
     return new Promise((resolve) => resolve(this.minmax));
   };
 
+  /**
+   * 与えられたパラメータに基づいて特定の図を選択します。
+   * @param tone - 図を選択するためのパラメータ
+   * @param contour - 図を選択するためのパラメータ
+   * @param vector - 図を選択するためのパラメータ
+   * @returns 選択された図
+   */
   public abstract whichDiagram<T, U, V>(
     tone: T,
     contour: U,

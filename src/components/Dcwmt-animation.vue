@@ -61,6 +61,7 @@ type DataType = {
 };
 
 export default Vue.extend({
+  // コンポーネントのデータを定義
   data(): DataType {
     return {
       sliders: new Array<Slider>(),
@@ -74,6 +75,7 @@ export default Vue.extend({
     };
   },
   computed: {
+    // VuexストアからdrawingOptionsを取得し、設定します。
     drawingOptions: {
       get: function (): DrawingOptions {
         return this.$store.getters.drawingOptions;
@@ -82,16 +84,19 @@ export default Vue.extend({
         this.$store.commit('setDrawingOptions', value);
       },
     },
+    // VuexストアからlayersIDを取得します。
     layersID: function (): string | undefined {
       return this.$store.getters.drawingOptions?.layers
         .map((v: LayerTypes) => v.id)
         .reduce((pValue: string, cValue: string) => pValue + cValue);
     },
+    // VuexストアからdefinedOptionsを取得します。
     definedOptions: function (): DefinedOptions | undefined {
       return this.$store.getters.definedOptions;
     },
   },
   methods: {
+    // URLを変更するメソッド
     changeURL: function (sliderIndex: number, hasIncrement: boolean = false) {
       const slider = this.sliders[sliderIndex];
       const newFixed = `${slider.title}=${slider.tick_label[slider.value]}`;
@@ -133,6 +138,7 @@ export default Vue.extend({
 
       this.$set(this.drawingOptions.layers, lenOfLayers - 1, lastLayer);
     },
+    // 再生/停止を切り替えるメソッド
     replay: function (sliderIndex: number) {
       this.sliders[sliderIndex].clicked = !this.sliders[sliderIndex].clicked;
 
@@ -152,6 +158,7 @@ export default Vue.extend({
     },
   },
   watch: {
+    // layersIDの変更を監視
     layersID: {
       handler: function (newID: string, oldID: string | undefined) {
         if (oldID && newID === oldID) {

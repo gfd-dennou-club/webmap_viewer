@@ -24,6 +24,7 @@ export default Vue.extend({
     //    ruler,
   },
   computed: {
+    // VuexストアからdrawingOptionsを取得し、設定します。
     drawingOptions: {
       get: function (): DrawingOptions {
         return this.$store.getters.drawingOptions;
@@ -32,15 +33,18 @@ export default Vue.extend({
         this.$store.commit('setDrawingOptions', value);
       },
     },
+    // VuexストアからdefinedOptionsを取得します。
     definedOptions: function () {
       return this.$store.getters.definedOptions;
     },
+    // VuexストアからfixedIndexを取得します。
     fixedIndex: function (): number | undefined {
       const layers = this.$store.getters.drawingOptions?.layers;
       if (!layers) return layers;
       const lastLayer = layers[layers.length - 1];
       return lastLayer.fixedindex;
     },
+    // VuexストアからviewerControllerを取得し、設定します。
     viewerController: {
       get: function () {
         return this.$store.getters.viewerController;
@@ -51,18 +55,21 @@ export default Vue.extend({
     },
   },
   methods: {
+    // 初期化メソッドです。コントローラを作成し、描画を行います。
     initialize: async function () {
       const controller = this.createController();
       this.viewerController = controller.viewerController;
       const layerController = controller.layerController;
       await this.draw(this.viewerController, layerController);
     },
+    // ネイティブズームレベルを取得するメソッドです。
     getZoomNativeLevel: function (definedOptions: DefinedOptions) {
       return {
         min: Math.max(...definedOptions.variables.map((v) => v.minZoom)),
         max: Math.min(...definedOptions.variables.map((v) => v.maxZoom)),
       };
     },
+    // 描画メソッドです。マップを作成し、レイヤーを追加します。
     draw: async function (
       viewerController: ViewerController,
       layerController: LayerController
@@ -90,6 +97,7 @@ export default Vue.extend({
 
       viewer.register(layerController);
     },
+    // コントローラを作成するメソッドです。
     createController() {
       if (!this.definedOptions) {
         throw new Error('definedOptions is undefined');
@@ -109,6 +117,7 @@ export default Vue.extend({
 
       return { viewerController, layerController };
     },
+    // createLayerMethodのためのプロパティを作成するメソッドです。
     createPropsForCreateLayerMethod(layer: LayerTypes, variables: Variable[]) {
       const variable = variables[layer.varindex];
       const fixed = variable.fixed[layer.fixedindex];
@@ -142,6 +151,7 @@ export default Vue.extend({
     },
   },
   watch: {
+    // drawingOptionsの変更を監視します。
     drawingOptions: {
       handler: async function (
         newOptions: DrawingOptions,
@@ -171,6 +181,7 @@ export default Vue.extend({
       },
       deep: true,
     },
+    // fixedIndexの変更を監視します。
     fixedIndex: function (newIndex: number) {
       const viewer = this.viewerController?.get();
       const layers = this.drawingOptions.layers;

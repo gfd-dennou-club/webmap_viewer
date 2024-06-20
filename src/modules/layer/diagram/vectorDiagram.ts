@@ -1,7 +1,15 @@
 import { Diagram } from './diagram';
 
+/**
+ * VectorDiagramクラスは、数値データに基づいてベクトル図を描画します。
+ */
 export class VectorDiagram extends Diagram {
   public vectorInterval: { x: number; y: number };
+  /**
+   * VectorDiagramクラスのコンストラクタ。
+   * @param vectorInterval - ベクトルの間隔
+   * @param mathMethod - 数値データを処理するための関数
+   */
   constructor(
     vectorInterval: { x: number; y: number },
     private readonly mathMethod: (x: number) => number
@@ -10,6 +18,12 @@ export class VectorDiagram extends Diagram {
     this.vectorInterval = vectorInterval;
   }
 
+  /**
+   * 数値データに基づいてベクトル図を描画します。
+   * @param datas - ベクトル図を描画するための数値データの配列
+   * @param canvas - ベクトル図を描画するキャンバス
+   * @returns ベクトル図が描画されたキャンバス
+   */
   protected drawVisualizedDiagramBasedONNumData = (
     datas: number[][],
     canvas: HTMLCanvasElement
@@ -81,15 +95,15 @@ export class VectorDiagram extends Diagram {
           x:
             startPointOfVector.x +
             arraysOfNormalizedMeanBlock[Direction.Horizontal][
-              x + y * this.vectorInterval.x
-            ] *
-              halfOfBlockSize.x,
+            x + y * this.vectorInterval.x
+              ] *
+            halfOfBlockSize.x,
           y:
             startPointOfVector.y +
             arraysOfNormalizedMeanBlock[Direction.Vertical][
-              x + y * this.vectorInterval.x
-            ] *
-              halfOfBlockSize.y,
+            x + y * this.vectorInterval.x
+              ] *
+            halfOfBlockSize.y,
         };
         const controlPointOfVector = [
           0,
@@ -114,7 +128,12 @@ export class VectorDiagram extends Diagram {
 
     return canvas;
   };
-
+  /**
+   * ベクトルを描画するためのブロックサイズを計算します。
+   * @param canvasSize - キャンバスのサイズ
+   * @param numOfVectorInCanvas - キャンバス内のベクトルの数
+   * @returns ブロックサイズ
+   */
   private BlockSizeToDrawingOneVector = (
     canvasSize: { width: number; height: number },
     numOfVectorInCanvas: { x: number; y: number }
@@ -124,7 +143,14 @@ export class VectorDiagram extends Diagram {
       y: canvasSize.height / numOfVectorInCanvas.y,
     };
   };
-
+  /**
+   * ブロックごとの平均を計算した配列を生成します。
+   * @param data - 数値データ
+   * @param canvasSize - キャンバスのサイズ
+   * @param blockSizeToDrawingOneVector - ベクトルを描画するためのブロックサイズ
+   * @param totalNumOfBlocksInCanvas - キャンバス内のブロックの総数
+   * @returns 平均を計算した配列
+   */
   private ArrayCalculatedToMeanPerBlock = (
     data: number[],
     canvasSize: { width: number; height: number },
@@ -146,11 +172,11 @@ export class VectorDiagram extends Diagram {
           start:
             startPoint.x * blockSizeToDrawingOneVector.x +
             (startPoint.y * blockSizeToDrawingOneVector.y + y) *
-              canvasSize.width,
+            canvasSize.width,
           end:
             (startPoint.x + 1) * blockSizeToDrawingOneVector.x +
             (startPoint.y * blockSizeToDrawingOneVector.y + y) *
-              canvasSize.width,
+            canvasSize.width,
         };
         const xSlicedArray = data.slice(slice.start, slice.end);
         applicable_array = applicable_array.concat(xSlicedArray);
@@ -163,7 +189,13 @@ export class VectorDiagram extends Diagram {
       return mean;
     });
   };
-
+  /**
+   * 与えられたパラメータに基づいてベクトル図を選択します。
+   * @param tone - 図を選択するためのパラメータ
+   * @param contour - 図を選択するためのパラメータ
+   * @param vector - 図を選択するためのパラメータ
+   * @returns 選択された図
+   */
   // @ts-ignore
   public whichDiagram<T, U, V>(tone: T, contour: U, vector: V): T | U | V {
     return vector;

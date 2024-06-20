@@ -2,10 +2,19 @@ import * as contour from 'd3-contour';
 import { geoPath, geoIdentity } from 'd3-geo';
 import { Diagram } from './diagram';
 
+/**
+ * ContourDiagramクラスは、数値データに基づいて等高線図を描画します。
+ */
 export class ContourDiagram extends Diagram {
   public thresholdInterval: number;
   protected readonly mathMethod: (x: number) => number;
 
+  /**
+   * ContourDiagramクラスのコンストラクタ。
+   * @param thresholdInterval - 等高線の間隔
+   * @param mathMethod - 数値データを処理するための関数
+   * @param minmax - 数値データの最小値と最大値
+   */
   constructor(
     thresholdInterval: number,
     mathMethod: (x: number) => number,
@@ -17,6 +26,12 @@ export class ContourDiagram extends Diagram {
     this.mathMethod = mathMethod;
   }
 
+  /**
+   * 数値データに基づいて等高線図を描画します。
+   * @param data - 等高線図を描画するための数値データの配列
+   * @param canvas - 等高線図を描画するキャンバス
+   * @returns 等高線図が描画されたキャンバス
+   */
   protected drawVisualizedDiagramBasedONNumData = (
     data: number[][],
     canvas: HTMLCanvasElement
@@ -51,6 +66,13 @@ export class ContourDiagram extends Diagram {
     return canvas;
   };
 
+  /**
+   * 与えられたパラメータに基づいて等高線図を選択します。
+   * @param tone - 図を選択するためのパラメータ
+   * @param contour - 図を選択するためのパラメータ
+   * @param vector - 図を選択するためのパラメータ
+   * @returns 選択された図
+   */
   // @ts-ignore
   public whichDiagram<T, U, V>(tone: T, contour: U, vector: V): T | U | V {
     return contour;

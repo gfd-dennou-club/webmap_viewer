@@ -35,10 +35,12 @@ export default Vue.extend({
     };
   },
   computed: {
+    // VuexストアからdrawingOptionsを取得し、設定します。
     drawinOptions: {
       get: function () {
         return this.$store.getters.drawingOptions;
       },
+      // 選択された数学的操作をdrawingOptionsに設定します。
       set: function (value: { name: string; method: (x: number) => number }) {
         const props = { mathMethod: value.method };
         this.$store.commit('setDrawingOptions', props);
