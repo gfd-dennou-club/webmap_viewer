@@ -1,0 +1,43 @@
+name: Build Test
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      
+      - name: Set up Python 2.7
+        uses: actions/setup-python@v5
+        id: setup-python2
+        with:
+          python-version: 2.7
+
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v5
+        id: setup-python3
+        with:
+          python-version: 3.9
+
+      - name: Display Python 2.7 version
+        run: python2.7 -c "import sys; print(sys.version)"
+        
+      - name: Display Python 3.9 version
+        run: python3.9 -c "import sys; print(sys.version)"
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 20
+
+      - name: Install Dependencies
+        run: npm i
+
+      - name: Build
+        run: npm run build
+      
