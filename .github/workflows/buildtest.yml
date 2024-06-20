@@ -13,11 +13,8 @@ jobs:
         uses: actions/checkout@v4
       
       - name: Set up Python 2.7
-        uses: actions/setup-python@v5
-        id: setup-python2
-        with:
-          python-version: 2.7
-
+        run:  apt -y install python2 
+        
       - name: Set up Python 3.9
         uses: actions/setup-python@v5
         id: setup-python3
