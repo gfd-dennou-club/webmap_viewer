@@ -1,9 +1,5 @@
 import { LayerTypes } from '@/dcmwtconfType';
-import { Viewer, TileCoordinatesImageryProvider, Color } from 'cesium';
-import Cartesian2 from 'cesium/Source/Core/Cartesian2';
-import Cartesian3 from 'cesium/Source/Core/Cartesian3';
-import Ellipsoid from 'cesium/Source/Core/Ellipsoid';
-import ImageryLayer from 'cesium/Source/Scene/ImageryLayer';
+import { Viewer, Color, Cartesian2, Cartesian3, Ellipsoid, ImageryLayer } from 'cesium';
 import { Layer3D } from '../../layer/lib/layer3D';
 import { LayerController } from '../../layer/LayerController';
 import { ViewerInterface } from './ViewerInterface';
@@ -20,7 +16,6 @@ export class Viewer3D extends Viewer implements ViewerInterface {
    */
   constructor(mapEl: HTMLDivElement, center: [number, number]) {
     super(mapEl, {
-      imageryProvider: new TileCoordinatesImageryProvider(),
       baseLayerPicker: false,
       requestRenderMode: true,
       maximumRenderTimeChange: Infinity,

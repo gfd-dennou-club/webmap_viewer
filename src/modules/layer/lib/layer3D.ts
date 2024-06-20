@@ -11,6 +11,7 @@ export class Layer3D
   implements LayerInterface
 {
   public minmax: [number, number] | undefined;
+
   /**
    * Layer3Dクラスのコンストラクタ。
    * @param name - レイヤーの名前
@@ -69,17 +70,17 @@ export class Layer3D
    * @param value - 透明度
    */
   set opacity(value: number) {
-    this.defaultAlpha = value;
+    this.opacity = value;
   }
   /**
    * 透明度を取得します。
    * @returns 透明度
    */
   get opacity(): number {
-    if (!this.defaultAlpha) {
+    if (!this.opacity) {
       throw new Error("Don't has alpha channel this layer");
     }
-    return this.defaultAlpha;
+    return this.opacity;
   }
   /**
    * 色インデックスを設定します。
