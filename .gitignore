@@ -2,3 +2,4 @@
 /node_modules
 /dist/tile
 .vscode
+dist
